@@ -1,0 +1,6 @@
+{
+  "molecule_name": "mols_65_3_25_n-cOC-N",
+  "degree": 50.0,
+  "smile": "[CH3][O][c]1[cH][c](-[c]2[cH][n][c](-[c]3[n][cH][c](-[c]4[cH][n][c](-[c]5[n][cH][cH][cH][c]5[O][CH3])[s]4)[cH][c]3[O][CH3])[s]2)[cH][n][c]1-[c]1[n][cH][cH][s]1",
+  "energy": 4.412230276641494
+}

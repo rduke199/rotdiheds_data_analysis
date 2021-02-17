@@ -1,0 +1,6 @@
+{
+  "molecule_name": "mols_65_1_16_n-n-C",
+  "degree": 150.0,
+  "smile": "[CH]1=[S+3]23[C-]([c]4[n][cH][cH][cH][n]4)[CH]2[CH]13",
+  "energy": 3.751045192541423
+}

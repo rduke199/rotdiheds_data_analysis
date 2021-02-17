@@ -1,0 +1,1 @@
+{"molecule_name": "mols_65_3_16_n-n-C", "smiles": "[cH]1[cH][n][c](-[c]2[cH][cH][c](-[c]3[cH][n][c](-[c]4[cH][cH][c](-[c]5[cH][n][c](-[c]6[cH][cH][cH][s]6)[n][cH]5)[s]4)[n][cH]3)[s]2)[n][cH]1", "tuned_omega": "01997259686183897", "homo": -7.1598635680000005, "lumo": -1.136620178, "homo_lumo_gap": 6.02324339}

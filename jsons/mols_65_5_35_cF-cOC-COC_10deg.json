@@ -1,0 +1,6 @@
+{
+  "molecule_name": "mols_65_5_35_cF-cOC-COC",
+  "degree": 10.0,
+  "smile": "c1cc(F)c(c(OC)c1)C2=C(OC)C=C(S2)c1cc(F)c(c(OC)c1)C2=C(OC)C=C(S2)c1cc(F)c(c(OC)c1)C2=C(OC)C=C(S2)c1cc(F)c(c(OC)c1)C2=C(OC)C=C(S2)c1cc(F)c(c(OC)c1)C2=C(OC)C=C(S2)",
+  "energy": 7.310293424955034
+}
