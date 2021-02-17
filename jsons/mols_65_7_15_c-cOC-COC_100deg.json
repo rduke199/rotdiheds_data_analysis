@@ -1,0 +1,6 @@
+{
+  "molecule_name": "mols_65_7_15_c-cOC-COC",
+  "degree": 100.0,
+  "smile": "[CH3][O][c]1[cH][c](-[c]2[cH][c]([O][CH3])[c](-[c]3[cH][cH][c](-[c]4[cH][c]([O][CH3])[c](-[c]5[cH][cH][c](-[c]6[cH][c]([O][CH3])[c](-[c]7[cH][cH][c](-[c]8[cH][c]([O][CH3])[c](-[c]9[cH][cH][c](-[c]%10[cH][c]([O][CH3])[c](-[c]%11[cH][cH][c](-[c]%12[cH][c]([O][CH3])[c](-[c]%13[cH][cH][cH][cH][c]%13[O][CH3])[s]%12)[cH][c]%11[O][CH3])[s]%10)[cH][c]9[O][CH3])[s]8)[cH][c]7[O][CH3])[s]6)[cH][c]5[O][CH3])[s]4)[cH][c]3[O][CH3])[s]2)[cH][cH][c]1-[c]1[s][cH][cH][c]1[O][CH3]",
+  "energy": 2.882949945233413
+}

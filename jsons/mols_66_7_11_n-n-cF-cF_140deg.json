@@ -1,0 +1,6 @@
+{
+  "molecule_name": "mols_66_7_11_n-n-cF-cF",
+  "degree": 140.0,
+  "smile": "[F][c]1[cH][cH][cH][n][c]1-[c]1[n][cH][c](-[c]2[cH][n][c](-[c]3[n][cH][c](-[c]4[cH][n][c](-[c]5[n][cH][c](-[c]6[cH][n][c](-[c]7[n][cH][c](-[c]8[cH][n][c](-[c]9[n][cH][c](-[c]%10[cH][n][c](-[c]%11[n][cH][c](-[c]%12[cH][n][c](-[c]%13[n][cH][cH][cH][c]%13[F])[c]([F])[cH]%12)[cH][c]%11[F])[c]([F])[cH]%10)[cH][c]9[F])[c]([F])[cH]8)[cH][c]7[F])[c]([F])[cH]6)[cH][c]5[F])[c]([F])[cH]4)[cH][c]3[F])[c]([F])[cH]2)[cH][c]1[F]",
+  "energy": 0.8246851510647684
+}

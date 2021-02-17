@@ -1,0 +1,6 @@
+{
+  "molecule_name": "mols_65_3_02_c-c-CF",
+  "degree": 70.0,
+  "smile": "[F][c]1[cH][cH][s][c]1-[c]1[cH][cH][c](-[c]2[cH][c]([F])[c](-[c]3[cH][cH][c](-[c]4[cH][c]([F])[c](-[c]5[cH][cH][cH][cH][cH]5)[s]4)[cH][cH]3)[s]2)[cH][cH]1",
+  "energy": 2.024166721909423
+}

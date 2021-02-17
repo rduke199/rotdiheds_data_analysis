@@ -1,0 +1,6 @@
+{
+  "molecule_name": "mols_65_7_16_n-n-C",
+  "degree": "90",
+  "smile": "[cH]1[cH][n][c](-[c]2[cH][cH][c](-[c]3[cH][n][c](-[c]4[cH][cH][c](-[c]5[cH][n][c](-[c]6[cH][cH][c](-[c]7[cH][n][c](-[c]8[cH][cH][c](-[c]9[cH][n][c](-[c]%10[cH][cH][c](-[c]%11[cH][n][c](-[c]%12[cH][cH][c](-[c]%13[cH][n][c](-[c]%14[cH][cH][cH][s]%14)[n][cH]%13)[s]%12)[n][cH]%11)[s]%10)[n][cH]9)[s]8)[n][cH]7)[s]6)[n][cH]5)[s]4)[n][cH]3)[s]2)[n][cH]1",
+  "energy": 10.91083084315469
+}

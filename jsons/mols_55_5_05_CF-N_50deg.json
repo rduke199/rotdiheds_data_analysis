@@ -1,0 +1,6 @@
+{
+  "molecule_name": "mols_55_5_05_CF-N",
+  "degree": 50.0,
+  "smile": "C1=CC(F)=C(S1)C2=NC=C(S2)C1=CC(F)=C(S1)C2=NC=C(S2)C1=CC(F)=C(S1)C2=NC=C(S2)C1=CC(F)=C(S1)C2=NC=C(S2)C1=CC(F)=C(S1)C2=NC=C(S2)",
+  "energy": 5.189675999795327
+}

@@ -1,0 +1,6 @@
+{
+  "molecule_name": "mols_65_7_01_c-c-N",
+  "degree": 10.0,
+  "smile": "c1ccc(cc1)C2=NC=C(S2)c1ccc(cc1)C2=NC=C(S2)c1ccc(cc1)C2=NC=C(S2)c1ccc(cc1)C2=NC=C(S2)c1ccc(cc1)C2=NC=C(S2)c1ccc(cc1)C2=NC=C(S2)c1ccc(cc1)C2=NC=C(S2)",
+  "energy": 0.16013172483326343
+}

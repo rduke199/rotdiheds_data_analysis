@@ -1,0 +1,6 @@
+{
+  "molecule_name": "mols_55_5_05_CF-N",
+  "degree": 70.0,
+  "smile": "[F][c]1[cH][cH][s][c]1-[c]1[n][cH][c](-[c]2[cH][c]([F])[c](-[c]3[n][cH][c](-[c]4[cH][c]([F])[c](-[c]5[n][cH][c](-[c]6[cH][c]([F])[c](-[c]7[n][cH][c](-[c]8[cH][c]([F])[c](-[c]9[n][cH][cH][s]9)[s]8)[s]7)[s]6)[s]5)[s]4)[s]3)[s]2)[s]1",
+  "energy": 6.479932593642151
+}
