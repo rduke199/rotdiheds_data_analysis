@@ -61,7 +61,7 @@ def make_small_mol_list(all_molecules, ring_num=None, unit_num=None, polymer_num
     return mol_list
 
 
-def overlay_plot(mol_list, title, out_dir, varying_attribute='unit_num', legend_outside=True, draw_1unit=False):
+def overlay_plot(mol_list, title, out_dir=None, varying_attribute='unit_num', legend_outside=True, draw_1unit=False):
     """
     Plot overlay plot.
     This function plots an overlay plot of all molecule PE curves in the mol_list
@@ -100,11 +100,13 @@ def overlay_plot(mol_list, title, out_dir, varying_attribute='unit_num', legend_
         img = new_ax.add_artist(AnnotationBbox(OffsetImage(mol_image, zoom=0.5), (1, 1)))
         new_ax.axis('off')
         fig.patch.set_facecolor("w")
-        fig.savefig(out_dir + 'torsionE_OverlayPlt_{}.png'.format(title), dpi=300, bbox_inches='tight',
-                    bbox_extra_artists=(img,))
-    else:
+        if out_dir is not None:
+            fig.savefig(out_dir + 'torsionE_OverlayPlt_{}.png'.format(title), dpi=300, bbox_inches='tight',
+                        bbox_extra_artists=(img,))
+            plt.close('all')
+    elif out_dir is not None:
         fig.savefig(out_dir + 'torsionE_OverlayPlt_{}.png'.format(title), dpi=300)
-    plt.close('all')
+        plt.close('all')
 
 
 def average_plot(mol_list, title, out_dir):

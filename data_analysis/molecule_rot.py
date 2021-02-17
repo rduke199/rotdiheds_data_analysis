@@ -15,12 +15,14 @@ class MoleculeRot:
     dictionary) for it's energies at each dihedral rotation. Each object also has descriptive properties such as name,
     smile ring number, unit number, polymer number, etc. There are only a couple class functions, but these draw the
     molecule structure and plot the PE curve.
+
     """
 
     def __init__(
             self,
             name,
             master_dir,
+            unified_unconst = False,
             energy_fn="master_energy.json",
             homo_fn="master_homos.json",
             lumo_fn="master_lumos.json",
@@ -31,6 +33,7 @@ class MoleculeRot:
         # Note: when entering this analysis, all energies should be in eV
         self.name = name
         self.master_dir = master_dir
+        self.unified_unconst = unified_unconst
 
         self.ring_num = int(self.name.split('_')[1])
         self.unit_num = int(self.name.split('_')[2])
@@ -42,9 +45,9 @@ class MoleculeRot:
         self.lumo_dict = self.make_dict_floats(self.get_data_from_master(os.path.join(master_dir, lumo_fn)))
         self.tuned_omega = self.get_data_from_master(os.path.join(master_dir, omega_fn))
         self.smiles = self.get_data_from_master(os.path.join(master_dir, smiles_fn))
-        self.unconst_data = self.get_data_from_master(os.path.join(master_dir, unconst_fn))
+        self.unconst_path = os.path.join(master_dir, unconst_fn)
+        self.unconst_data = self.get_data_from_master(self.unconst_path)
 
-        # self.unconst_path = os.path.join(master_dir, unconst_fn)
 
     def __str__(self):
         return f'name: {self.name}\n{self.ring_num} ring type, {self.unit_num} monomer units, {self.substituents} ' \
@@ -65,33 +68,41 @@ class MoleculeRot:
 
     @staticmethod
     def make_dict_floats(_dict):
-        return dict(sorted({float(key): float(value) for key, value in _dict.items()}.items()))
+        if _dict is not None:
+            return dict(sorted({float(key): float(value) for key, value in _dict.items()}.items()))
 
-    # @property
-    # def unconst_data(self):
-    #     units = [1,3,5,7]
-    #     angle_dict, energy_dict = {}, {}
-    #     with open(self.unconst_path, 'r') as fn:
-    #         _dict = json.load(fn)
-    #     for unit in units:
-    #         mol_name = 'mols_{}_{}_{:02d}_{}'.format(self.ring_num, unit, self.polymer_num, self.substituents)
-    #         try:
-    #             angle_dict[unit] = _dict[mol_name][0]
-    #             energy_dict[unit] = _dict[mol_name][1]
-    #         except KeyError:
-    #             try:
-    #                 angle_dict[unit], energy_dict[unit] = [v for k, v in _dict.items() if k.startswith(mol_name)][0]
-    #             except IndexError:
-    #                 pass
-    #     try:
-    #         min_energy_unit = min(energy_dict, key=energy_dict.get)
-    #         return [angle_dict[min_energy_unit], energy_dict[min_energy_unit]]
-    #     except ValueError:
-    #         return None
+    @property
+    def unified_unconst_data(self):
+        """
+        This returns the unconstrained energy data from the minimum energy length out of all lengths of this polymer,
+        instead of the unconstrained energy data from this polymer at this particular length
+        """
+        units = [1,3,5,7]
+        angle_dict, energy_dict = {}, {}
+        with open(self.unconst_path, 'r') as fn:
+            _dict = json.load(fn)
+        for unit in units:
+            mol_name = 'mols_{}_{}_{:02d}_{}'.format(self.ring_num, unit, self.polymer_num, self.substituents)
+            try:
+                angle_dict[unit] = _dict[mol_name][0]
+                energy_dict[unit] = _dict[mol_name][1]
+            except KeyError:
+                try:
+                    angle_dict[unit], energy_dict[unit] = [v for k, v in _dict.items() if k.startswith(mol_name)][0]
+                except IndexError:
+                    pass
+        try:
+            min_energy_unit = min(energy_dict, key=energy_dict.get)
+            return [angle_dict[min_energy_unit], energy_dict[min_energy_unit]]
+        except ValueError:
+            return None
 
     @property
     def unconst_energy(self):
-        _dict = self.unconst_data
+        if self.unified_unconst:
+            _dict = self.unified_unconst_data
+        else:
+            _dict = self.unconst_data
         if _dict is None:
             return None
         else:
@@ -99,6 +110,10 @@ class MoleculeRot:
 
     @property
     def unconst_angle(self):
+        if self.unified_unconst:
+            _dict = self.unified_unconst_data
+        else:
+            _dict = self.unconst_data
         _dict = self.unconst_data
         if _dict is None:
             return None
@@ -138,13 +153,13 @@ class MoleculeRot:
         phi, energy = self.norm_energy_dict.keys(), self.norm_energy_dict.values()
         plt.scatter(phi, energy)
 
-        ax.set_xlim(0, 3)
-        ax.set_ylim(0, 3)
+        # ax.set_xlim(0, 3)
+        # ax.set_ylim(0, 3)
 
         plt.xlim(min(phi) - 3, max(phi) + 3)
-        plt.xticks(np.linspace(start=0, stop=180, num=7))
-        plt.ylim(top=15, bottom=-1)
-        plt.yticks(np.linspace(start=-10, stop=14, num=5))
+        # plt.xticks(np.linspace(start=0, stop=180, num=7))
+        plt.ylim(top=max(energy)+5, bottom=min(energy)-5)
+        # plt.yticks(np.linspace(start=-10, stop=14, num=5))
         plt.xlabel("dihedral angle (degrees)")
         plt.ylabel("energy (kcal/mol)")
         plt.title("Energy for " + self.name)

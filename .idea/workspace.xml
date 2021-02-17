@@ -1,14 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fe6c937e-4054-44e0-919b-2f51256bbdaa" name="Default Changelist" comment="initial commit part 2" />
+    <list default="true" id="fe6c937e-4054-44e0-919b-2f51256bbdaa" name="Default Changelist" comment="initial commit part 3">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_analysis/Implement_Data_Analysis.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/data_analysis/Implement_Data_Analysis.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_analysis/molecule_rot.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_analysis/molecule_rot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_analysis/plotting.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_analysis/plotting.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <option name="PUSH_TAGS">
+      <GitPushTagMode>
+        <option name="argument" value="--tags" />
+        <option name="title" value="All" />
+      </GitPushTagMode>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="ProjectId" id="1ncLnkrr5fPLu3H9kZg7qlIN1ax" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -101,7 +120,7 @@
       <workItem from="1612981756751" duration="9413000" />
       <workItem from="1613418474546" duration="9900000" />
       <workItem from="1613513637417" duration="5834000" />
-      <workItem from="1613573365519" duration="1347000" />
+      <workItem from="1613573365519" duration="5382000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1613573900605</created>
@@ -117,15 +136,34 @@
       <option name="project" value="LOCAL" />
       <updated>1613574245820</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="initial commit part 3">
+      <created>1613574959167</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1613574959167</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initial commit" />
     <MESSAGE value="initial commit part 2" />
-    <option name="LAST_COMMIT_MESSAGE" value="initial commit part 2" />
+    <MESSAGE value="initial commit part 3" />
+    <option name="LAST_COMMIT_MESSAGE" value="initial commit part 3" />
   </component>
 </project>
