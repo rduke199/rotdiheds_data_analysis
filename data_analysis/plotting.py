@@ -61,7 +61,7 @@ def make_small_mol_list(all_molecules, ring_num=None, unit_num=None, polymer_num
     return mol_list
 
 
-def overlay_plot(mol_list, title, out_dir=None, varying_attribute='unit_num', legend_outside=True, draw_1unit=False):
+def overlay_energy_plot(mol_list, title, out_dir=None, varying_attribute='unit_num', draw_1unit=False):
     """
     Plot overlay plot.
     This function plots an overlay plot of all molecule PE curves in the mol_list
@@ -74,14 +74,15 @@ def overlay_plot(mol_list, title, out_dir=None, varying_attribute='unit_num', le
     :param draw_1unit: boolean. If Ture, the monomer structure will be drawn outside the plot
     :return: None
     """
+    color_dict = {1: 'k', 3: 'c', 5: 'm', 7: 'y'}
     fig, ax = plt.subplots()
     for mol in mol_list:
         if mol.unit_num == 1:
             mol_image = mpimg.pil_to_array(mol.draw_structure())
         try:
             phi, energy = mol.norm_energy_dict.keys(), mol.norm_energy_dict.values()
-            ax.scatter(phi, energy, label=eval('mol.' + varying_attribute))
-            ax.plot(phi, energy)
+            ax.scatter(phi, energy, label=eval('mol.' + varying_attribute), color=color_dict[mol.unit_num])
+            ax.plot(phi, energy, color=color_dict[mol.unit_num])
         except:
             print('Error. Did not plot {} {} for {}.'.format(varying_attribute, eval('mol.'+varying_attribute), title))
 
@@ -93,8 +94,10 @@ def overlay_plot(mol_list, title, out_dir=None, varying_attribute='unit_num', le
     ax.set_ylabel("energy (kcal/mol)")
     ax.set_title(title)
     fig.patch.set_facecolor("w")
-    if legend_outside:
-        fig.legend(loc='lower left', bbox_to_anchor=(1, 0))
+    # sort both labels and handles by labels
+    handles, labels = ax.get_legend_handles_labels()
+    labels, handles = zip(*sorted(zip(labels, handles), key=lambda t: t[0]))
+    ax.legend(handles, labels)
     if draw_1unit:
         new_ax = fig.add_axes([0.7, .2, 0.4, 0.4], anchor='NE')
         img = new_ax.add_artist(AnnotationBbox(OffsetImage(mol_image, zoom=0.5), (1, 1)))
@@ -108,6 +111,59 @@ def overlay_plot(mol_list, title, out_dir=None, varying_attribute='unit_num', le
         fig.savefig(out_dir + 'torsionE_OverlayPlt_{}.png'.format(title), dpi=300)
         plt.close('all')
 
+def overlay_homo_lumo_plot(mol_list, title, out_dir=None, varying_attribute='unit_num', draw_1unit=False):
+    """
+    Plot overlay plot.
+    This function plots an overlay plot of all molecule homos and lumos in the mol_list
+
+    :param mol_list: list of molecules as MoleculeRot objects
+    :param title: str title
+    :param out_dir: path to directory in which to save figure
+    :param varying_attribute: str attribute that will be specified in legend
+    :param legend_outside: boolean. If Ture, the legend will be outside the plot
+    :param draw_1unit: boolean. If Ture, the monomer structure will be drawn outside the plot
+    :return: None
+    """
+    color_dict = {1: 'k', 3: 'c', 5: 'm', 7: 'y'}
+    fig, ax = plt.subplots()
+    for mol in mol_list:
+        if mol.unit_num == 1:
+            mol_image = mpimg.pil_to_array(mol.draw_structure())
+        try:
+            phi_h, homo = mol.homo_dict.keys(), mol.homo_dict.values()
+            phi_l, lumo = mol.lumo_dict.keys(), list(mol.lumo_dict.values())
+
+            ax.scatter(phi_h, homo, color=color_dict[mol.unit_num], label=eval('mol.' + varying_attribute)) #label='{0} HOMO'.format(eval('mol.' + varying_attribute)))
+            ax.plot(phi_h, homo, color=color_dict[mol.unit_num])
+            ax.scatter(phi_l, lumo, color=color_dict[mol.unit_num]) # label='{0} LUMO'.format(eval('mol.' + varying_attribute)))
+            ax.plot(phi_l, lumo, color=color_dict[mol.unit_num])
+        except:
+            print('Error. Did not plot homo/lumo {} {} for {}.'.format(varying_attribute, eval('mol.'+varying_attribute), title))
+
+    ax.set_xlim(-3, 183)
+    ax.set_xticks(np.linspace(start=0, stop=180, num=7))
+    ax.set_ylim(top=5, bottom=-20)
+    ax.set_yticks(np.linspace(start=-20, stop=5, num=6))
+    ax.set_xlabel("dihedral angle (degrees)")
+    ax.set_ylabel("energy (kcal/mol)")
+    ax.set_title(title)
+    fig.patch.set_facecolor("w")
+    # sort both labels and handles by labels
+    handles, labels = ax.get_legend_handles_labels()
+    labels, handles = zip(*sorted(zip(labels, handles), key=lambda t: t[0]))
+    ax.legend(handles, labels)
+    if draw_1unit:
+        new_ax = fig.add_axes([0.7, .2, 0.4, 0.4], anchor='NE')
+        img = new_ax.add_artist(AnnotationBbox(OffsetImage(mol_image, zoom=0.5), (1, 1)))
+        new_ax.axis('off')
+        fig.patch.set_facecolor("w")
+        if out_dir is not None:
+            fig.savefig(out_dir + 'torsionE_OverlayHomoLumo_{}.png'.format(title), dpi=300, bbox_inches='tight',
+                        bbox_extra_artists=(img,))
+            plt.close('all')
+    elif out_dir is not None:
+        fig.savefig(out_dir + 'torsionE_OverlayPlt_{}.png'.format(title), dpi=300)
+        plt.close('all')
 
 def average_plot(mol_list, title, out_dir):
     """

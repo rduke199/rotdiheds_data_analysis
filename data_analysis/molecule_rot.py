@@ -125,17 +125,21 @@ class MoleculeRot:
         return min(self.energy_dict.values())
 
     @property
+    def max_e_norm(self):
+        return max(self.norm_energy_dict.values())
+
+    @property
     def norm_energy_dict(self):
         # This dictionary is the only one with kcal/mol energies
-        if self.unconst_energy is None:
-            _norm_edict = {float(deg): 23.06 * (float(eng) - self.min_e) for deg, eng in self.energy_dict.items()}
-            _sorted_norm_edict = dict(sorted(_norm_edict.items()))
-            return _sorted_norm_edict
-        else:
-            _norm_edict = {float(deg): 23.06 * (float(eng) - self.unconst_energy) for deg, eng in
-                           self.energy_dict.items()}
-            _sorted_norm_edict = dict(sorted(_norm_edict.items()))
-            return _sorted_norm_edict
+        # if self.unconst_energy is None:
+        _norm_edict = {float(deg): 23.06 * (float(eng) - self.min_e) for deg, eng in self.energy_dict.items()}
+        _sorted_norm_edict = dict(sorted(_norm_edict.items()))
+        return _sorted_norm_edict
+        # else:
+        #     _norm_edict = {float(deg): 23.06 * (float(eng) - self.unconst_energy) for deg, eng in
+        #                    self.energy_dict.items()}
+        #     _sorted_norm_edict = dict(sorted(_norm_edict.items()))
+        #     return _sorted_norm_edict
 
     def draw_structure(self, out_dir=None):
         molecule = Chem.MolFromSmiles(self.smiles)
@@ -184,11 +188,10 @@ class MoleculeRot:
         ax.scatter(phi_l, lumo, label='LUMO')
         ax.plot(phi_l, lumo)
 
-        # ax.xlim(-3, 183)
-        # ax.xticks(np.linspace(start=0, stop=180, num=7))
-        # ax.set_ylim(top=(eng_max + 2), bottom=-(eng_min - 2))
-        ax.set_ylim(top=10,bottom=-15)
-        # plt.yticks(np.linspace(start=-10, stop=14, num=5))
+        ax.set_xlim(-3, 183)
+        ax.set_xticks(np.linspace(start=0, stop=180, num=7))
+        ax.set_ylim(top=5,bottom=-20)
+        ax.set_yticks(np.linspace(start=-20, stop=5, num=6))
         ax.set_xlabel("dihedral angle (degrees)")
         ax.set_ylabel("energy (kcal/mol)")
         ax.set_title("HOMO/LUMO for " + self.name)
