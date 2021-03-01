@@ -23,6 +23,8 @@ class MoleculeRot:
             name,
             master_dir,
             unified_unconst = False,
+            chromophore_fn="master_chromophore.json",
+            sidechain_fn="master_sidechain.json",
             energy_fn="master_energy.json",
             homo_fn="master_homos.json",
             lumo_fn="master_lumos.json",
@@ -40,6 +42,8 @@ class MoleculeRot:
         self.polymer_num = int(self.name.split('_')[3])
         self.substituents = self.name.split('_')[4]
 
+        self.chromophore = self.get_data_from_master_1unit(os.path.join(master_dir, chromophore_fn))
+        self.side_chain = self.get_data_from_master_1unit(os.path.join(master_dir, sidechain_fn))
         self.energy_dict = self.make_dict_floats(self.get_data_from_master(os.path.join(master_dir, energy_fn)))
         self.homo_dict = self.make_dict_floats(self.get_data_from_master(os.path.join(master_dir, homo_fn)))
         self.lumo_dict = self.make_dict_floats(self.get_data_from_master(os.path.join(master_dir, lumo_fn)))
@@ -62,6 +66,20 @@ class MoleculeRot:
         except KeyError:
             try:
                 _data = [v for k, v in _dict.items() if k.startswith(self.name)][0]
+                return _data
+            except IndexError:
+                return None
+
+    def get_data_from_master_1unit(self, master_file):
+        mol_name = 'mols_{}_1_{:02d}_{}'.format(self.ring_num, self.polymer_num, self.substituents)
+        with open(master_file, 'r') as fn:
+            _dict = json.load(fn)
+        try:
+            _data = _dict[mol_name]
+            return _data
+        except KeyError:
+            try:
+                _data = [v for k, v in _dict.items() if k.startswith(mol_name)][0]
                 return _data
             except IndexError:
                 return None
