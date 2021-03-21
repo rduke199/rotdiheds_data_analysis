@@ -1,1 +1,0 @@
-/mnt/gpfs2_4m/scratch/rdu230/ondemand/projects/dihedral_energies/7trial/rotated_dihed/mols_55_5_02_C-N/mols_55_5_02_C_150deg/mols_55_5_02_C_150deg.gjf

@@ -1,4 +1,0 @@
-  File "rotDiheds2.py", line 62
-    print(i)
-           ^
-TabError: inconsistent use of tabs and spaces in indentation

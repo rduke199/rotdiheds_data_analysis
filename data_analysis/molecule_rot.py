@@ -7,6 +7,9 @@ from rdkit.Chem import AllChem, Draw
 import matplotlib.pyplot as plt
 
 
+# from pymatgen.core.structure import IMolecule
+
+
 class MoleculeRot:
     """
     MoleculeRot Object
@@ -22,7 +25,7 @@ class MoleculeRot:
             self,
             name,
             master_dir,
-            unified_unconst = False,
+            unified_unconst=False,
             chromophore_fn="master_chromophore.json",
             sidechain_fn="master_sidechain.json",
             energy_fn="master_energy.json",
@@ -30,7 +33,9 @@ class MoleculeRot:
             lumo_fn="master_lumos.json",
             unconst_fn="master_geomopt.json",
             omega_fn="master_omega.json",
-            smiles_fn="master_smiles.json"
+            smiles_fn="master_smiles.json",
+            centdihed_fn="master_centdihed_atoms.json",
+            structures_fn="master_structures.json"
     ):
         # Note: when entering this analysis, all energies should be in eV
         self.name = name
@@ -40,18 +45,19 @@ class MoleculeRot:
         self.ring_num = int(self.name.split('_')[1])
         self.unit_num = int(self.name.split('_')[2])
         self.polymer_num = int(self.name.split('_')[3])
-        self.substituents = self.name.split('_')[4]
+        self.substituents = (self.name.split('_')[4])
 
         self.chromophore = self.get_data_from_master_1unit(os.path.join(master_dir, chromophore_fn))
-        self.side_chain = self.get_data_from_master_1unit(os.path.join(master_dir, sidechain_fn))
+        self.side_chains = tuple(self.get_data_from_master_1unit(os.path.join(master_dir, sidechain_fn)))
         self.energy_dict = self.make_dict_floats(self.get_data_from_master(os.path.join(master_dir, energy_fn)))
         self.homo_dict = self.make_dict_floats(self.get_data_from_master(os.path.join(master_dir, homo_fn)))
         self.lumo_dict = self.make_dict_floats(self.get_data_from_master(os.path.join(master_dir, lumo_fn)))
-        self.tuned_omega = self.get_data_from_master(os.path.join(master_dir, omega_fn))
+        self.tuned_omega_orig = self.get_data_from_master(os.path.join(master_dir, omega_fn))
         self.smiles = self.get_data_from_master(os.path.join(master_dir, smiles_fn))
         self.unconst_path = os.path.join(master_dir, unconst_fn)
         self.unconst_data = self.get_data_from_master(self.unconst_path)
-
+        self.cent_diheds = self.get_data_from_master(os.path.join(master_dir, centdihed_fn))
+        self.structures_data = self.get_data_from_master(os.path.join(master_dir, structures_fn))
 
     def __str__(self):
         return f'name: {self.name}\n{self.ring_num} ring type, {self.unit_num} monomer units, {self.substituents} ' \
@@ -90,12 +96,19 @@ class MoleculeRot:
             return dict(sorted({float(key): float(value) for key, value in _dict.items()}.items()))
 
     @property
+    def tuned_omega(self):
+        if self.tuned_omega_orig is None:
+            return None
+        else:
+            return float("0." + self.tuned_omega_orig[1:])
+
+    @property
     def unified_unconst_data(self):
         """
         This returns the unconstrained energy data from the minimum energy length out of all lengths of this polymer,
         instead of the unconstrained energy data from this polymer at this particular length
         """
-        units = [1,3,5,7]
+        units = [1, 3, 5, 7]
         angle_dict, energy_dict = {}, {}
         with open(self.unconst_path, 'r') as fn:
             _dict = json.load(fn)
@@ -139,6 +152,18 @@ class MoleculeRot:
             return abs(_dict[0])
 
     @property
+    def central_bond_length_dict(self):
+        _dict = {}
+        for degree in self.structures_data.keys():
+            xyz_structure = self.cent_diheds[degree]
+            imol = IMolecule.from_file(xyz_structure)
+            cnt_atom1 = self.cent_diheds[0][1]
+            cnt_atom2 = self.cent_diheds[0][2]
+            cnt_bond_length = imol.get_distance(cnt_atom1, cnt_atom2)
+            _dict[degree] = cnt_bond_length
+        return _dict
+
+    @property
     def min_e(self):
         return min(self.energy_dict.values())
 
@@ -158,6 +183,10 @@ class MoleculeRot:
         #                    self.energy_dict.items()}
         #     _sorted_norm_edict = dict(sorted(_norm_edict.items()))
         #     return _sorted_norm_edict
+
+    @property
+    def chromophore_side(self):
+        return str(self.chromophore) + ', ' + str(self.side_chains)
 
     def draw_structure(self, out_dir=None):
         molecule = Chem.MolFromSmiles(self.smiles)
@@ -180,7 +209,7 @@ class MoleculeRot:
 
         plt.xlim(min(phi) - 3, max(phi) + 3)
         # plt.xticks(np.linspace(start=0, stop=180, num=7))
-        plt.ylim(top=max(energy)+5, bottom=min(energy)-5)
+        plt.ylim(top=max(energy) + 5, bottom=min(energy) - 5)
         # plt.yticks(np.linspace(start=-10, stop=14, num=5))
         plt.xlabel("dihedral angle (degrees)")
         plt.ylabel("energy (kcal/mol)")
@@ -189,6 +218,7 @@ class MoleculeRot:
         if out_dir is not None:
             plt.savefig(out_dir + 'torsionE_plt_{}.png'.format(self.name), dpi=300, bbox_inches='tight')
             plt.close('all')
+
 
     def plot_homo_lumo(self, out_dir=None):
         """
@@ -208,7 +238,7 @@ class MoleculeRot:
 
         ax.set_xlim(-3, 183)
         ax.set_xticks(np.linspace(start=0, stop=180, num=7))
-        ax.set_ylim(top=5,bottom=-20)
+        ax.set_ylim(top=5, bottom=-20)
         ax.set_yticks(np.linspace(start=-20, stop=5, num=6))
         ax.set_xlabel("dihedral angle (degrees)")
         ax.set_ylabel("energy (kcal/mol)")
