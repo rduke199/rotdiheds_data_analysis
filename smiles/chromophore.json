@@ -1,0 +1,13 @@
+{
+ "biphenyl": "c2ccc(c1ccccc1)cc2",
+ "bithiazole": "c2csc(c1nccs1)n2",
+ "bithiophene": "c2csc(c1cccs1)c2",
+ "bypyridyl": "c2ccc(c1ccccn1)nc2",
+ "phenyl_pyridine": "c2ccc(c1ccccn1)cc2",
+ "phenyl_thiazole": "c2ccc(c1nccs1)cc2",
+ "pyridyl_thiazole": "c2ccc(c1nccs1)nc2",
+ "phenyl_thiophene": "c2ccc(c1cccs1)cc2",
+ "thiazolyl_pyrimidine": "c2cnc(c1nccs1)nc2",
+ "thienyl_pyridine": "c2ccc(c1cccs1)nc2",
+ "thienyl_pyrimidine": "c2cnc(c1cccs1)nc2",
+ "thienyl_thiazole": "c2csc(c1nccs1)c2"}

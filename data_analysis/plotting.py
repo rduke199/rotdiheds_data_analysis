@@ -201,7 +201,7 @@ def plot_omega(mol_list, title, out_dir=None, varying_attribute='name', draw_1un
     ax.scatter(plot_data.keys(), plot_data.values())
     ax.plot(plot_data.keys(), plot_data.values())
 
-    ax.set_ylim(top=0.6, bottom=0.0)
+    ax.set_ylim(top=0.4, bottom=0.0)
     ax.set_xlabel(x_labels)
     ax.set_ylabel(y_labels)
     ax.set_title(title)
