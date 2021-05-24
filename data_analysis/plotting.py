@@ -8,17 +8,18 @@ from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 from molecule_rot import MoleculeRot
 
 
-def make_all_mol_list(master_dir):
+def make_all_mol_list(master_dir, name_file='master_smiles.json'):
     """
     Make molecule object list.
     This function makes a list of MoleculeRot objects for all molecules in the energy_dir.
 
     :param master_dir: str path to master directory
+    :param name_file: name of file from which to draw molecule names
     :return: list of all molecules as MoleculeRot objects.
     """
     all_molecules = []
     master_files = [x for x in os.listdir(master_dir) if x.startswith('master')]
-    master_path = os.path.join(master_dir, master_files[0])
+    master_path = os.path.join(master_dir, name_file)
     with open(master_path, 'r') as fn:
         data = json.load(fn)
     mol_names = data.keys()

@@ -4,6 +4,7 @@ import json
 import numpy as np
 from rdkit import Chem
 from rdkit.Chem import AllChem, Draw
+from pymatgen.io.xyz import XYZ
 import matplotlib.pyplot as plt
 
 
@@ -35,7 +36,8 @@ class MoleculeRot:
             omega_fn="master_omega.json",
             smiles_fn="master_smiles.json",
             centdihed_fn="master_centdihed_atoms.json",
-            structures_fn="master_structures.json"
+            structures_fn="master_structures.json",
+            anti_syn_fn="master_anti_syn.json"
     ):
         # Note: when entering this analysis, all energies should be in eV
         self.name = name
@@ -58,6 +60,7 @@ class MoleculeRot:
         self.unconst_data = self.get_data_from_master(self.unconst_path)
         self.cent_diheds = self.get_data_from_master(os.path.join(master_dir, centdihed_fn))
         self.structures_data = self.get_data_from_master(os.path.join(master_dir, structures_fn))
+        self.anti_syn = self.get_data_from_master_1unit(os.path.join(master_dir, anti_syn_fn))
 
     def __str__(self):
         return f'name: {self.name}\n{self.ring_num} ring type, {self.unit_num} monomer units, {self.substituents} ' \
@@ -68,13 +71,15 @@ class MoleculeRot:
             _dict = json.load(fn)
         try:
             _data = _dict[self.name]
-            return _data
         except KeyError:
             try:
                 _data = [v for k, v in _dict.items() if k.startswith(self.name)][0]
-                return _data
             except IndexError:
                 return None
+        if _data == {}:
+            return None
+        else:
+            return _data
 
     def get_data_from_master_1unit(self, master_file):
         mol_name = 'mols_{}_1_{:02d}_{}'.format(self.ring_num, self.polymer_num, self.substituents)
@@ -155,34 +160,36 @@ class MoleculeRot:
     def central_bond_length_dict(self):
         _dict = {}
         for degree in self.structures_data.keys():
-            xyz_structure = self.cent_diheds[degree]
-            imol = IMolecule.from_file(xyz_structure)
+            xyz_structure = self.structures_data[degree]
+            mol = XYZ._from_frame_string(xyz_structure)
             cnt_atom1 = self.cent_diheds[0][1]
             cnt_atom2 = self.cent_diheds[0][2]
-            cnt_bond_length = imol.get_distance(cnt_atom1, cnt_atom2)
-            _dict[degree] = cnt_bond_length
-        return _dict
+            cnt_bond_length = mol.get_distance(cnt_atom1, cnt_atom2)
+            _dict[float(degree)] = cnt_bond_length
+        _sorted_dict = dict(sorted(_dict.items()))
+        return _sorted_dict
 
     @property
     def min_e(self):
-        return min(self.energy_dict.values())
+        if self.energy_dict is not None:
+            return min(self.energy_dict.values())
 
     @property
     def max_e_norm(self):
-        return max(self.norm_energy_dict.values())
+        if self.norm_energy_dict is not None:
+            return max(self.norm_energy_dict.values())
 
     @property
     def norm_energy_dict(self):
         # This dictionary is the only one with kcal/mol energies
-        # if self.unconst_energy is None:
-        _norm_edict = {float(deg): 23.06 * (float(eng) - self.min_e) for deg, eng in self.energy_dict.items()}
-        _sorted_norm_edict = dict(sorted(_norm_edict.items()))
-        return _sorted_norm_edict
-        # else:
-        #     _norm_edict = {float(deg): 23.06 * (float(eng) - self.unconst_energy) for deg, eng in
-        #                    self.energy_dict.items()}
-        #     _sorted_norm_edict = dict(sorted(_norm_edict.items()))
-        #     return _sorted_norm_edict
+        energy_dict = self.energy_dict
+        min_e = self.min_e
+        try:
+            _norm_edict = {float(deg): 23.06 * (float(eng) - min_e) for deg, eng in energy_dict.items()}
+            _sorted_norm_edict = dict(sorted(_norm_edict.items()))
+            return _sorted_norm_edict
+        except AttributeError:
+            return None
 
     @property
     def chromophore_side(self):
